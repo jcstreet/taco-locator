@@ -1,6 +1,7 @@
 'use strict'
 
 const mapToken = 'sk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBua2txcjAzbTkzb210ZTNsaGgydjYifQ.C1_LjKlb9NHHNN-nNthetw';
+const mapToken = 'https://api.mapbox.com/directions/v5/mapbox/walking/';
 
 const tripAdvisorKey = '1657e754d7msh055d850080cfb12p1fd65bjsnefdf7a34fe0c';
 const tripAdvisorHost = 'tripadvisor1.p.rapidapi.com';
@@ -26,10 +27,21 @@ function displayResults(responseJson) {
     //$('#results').removeClass('hidden')
 }
 
-function formatQueryParams(params) {
+function formatRestaruantParams(params) {
     const queryItems = Object.keys(params)
         .map(key => `${key}=${params[key]}`)
     return queryItems.join('&');
+}
+
+function formatMapParams(params) {
+    const queryItems = Object.keys(params)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    return queryItems.join('&');
+}
+
+function getMapData() {
+    const mapURLTest = 'https://api.mapbox.com/directions/v5/mapbox/walking/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBuaGc1ODAza2UzbG1zeTN4YmR6aTYifQ.jwuhK79huZWKto7UTfZvQQ';
+    sendAPIRequest(mapURLTest);
 }
 
 function getRestaurants(lat, long) {
@@ -40,7 +52,7 @@ function getRestaurants(lat, long) {
         combined_food: '5110'   // Ensures we are only receiving results for mexican restaurants
     };
 
-    const queryString = formatQueryParams(params);
+    const queryString = formatRestaruantParams(params);
     const url = tripAdvisorURL + '?' + queryString;
     
     const options = {
@@ -78,7 +90,8 @@ function watchForm() {
         let lat = '40.712776';
         let long = '-74.005974';
 
-        getRestaurants(lat, long);
+        // getRestaurants(lat, long);
+        getMapData();
     });
 }
 
