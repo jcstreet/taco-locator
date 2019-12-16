@@ -1,7 +1,8 @@
 'use strict'
 
 const mapToken = 'sk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBua2txcjAzbTkzb210ZTNsaGgydjYifQ.C1_LjKlb9NHHNN-nNthetw';
-const mapToken = 'https://api.mapbox.com/directions/v5/mapbox/walking/';
+const mapURL = 'https://api.mapbox.com/directions/v5/mapbox/walking/';
+const geocodingURL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
 const tripAdvisorKey = '1657e754d7msh055d850080cfb12p1fd65bjsnefdf7a34fe0c';
 const tripAdvisorHost = 'tripadvisor1.p.rapidapi.com';
@@ -44,6 +45,17 @@ function getMapData() {
     sendAPIRequest(mapURLTest);
 }
 
+function getGeocode(addr, geoURL, token) {
+    //const geoURLTest = 'https://api.mapbox.com/geocoding/v5/mapbox.places/95%20Mt%20Pleasant%20St%20Frostburg%20MD%2021532.json?access_token=pk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBuaGc1ODAza2UzbG1zeTN4YmR6aTYifQ.jwuhK79huZWKto7UTfZvQQ';
+    // sendAPIRequest(geoURLTest);
+
+    const reformatAddr = encodeURIComponent(addr);
+    console.log(reformatAddr);
+
+    const url = geoURL + reformatAddr + '.json?access_token=' + token;
+    sendAPIRequest(url);
+}
+
 function getRestaurants(lat, long) {
     const params = {
         latitude: lat,
@@ -84,14 +96,11 @@ function sendAPIRequest(url, options) {
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
-        const searchTerm = $('#js-search-term').val();
-
-        let query = 'taco';
-        let lat = '40.712776';
-        let long = '-74.005974';
+        const address = $('#adr').val() + ' ' + $('#city').val() + ' ' + $('#state').val() + ' ' + $('#zip').val();
+        getGeocode(address, geocodingURL, mapToken);
 
         // getRestaurants(lat, long);
-        getMapData();
+        //getGeocode();
     });
 }
 
