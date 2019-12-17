@@ -9,7 +9,11 @@ const tripAdvisorHost = 'tripadvisor1.p.rapidapi.com';
 const tripAdvisorURL = 'https://tripadvisor1.p.rapidapi.com/restaurants/list-by-latlng';
 
 
+let options = {};
+let restUrl = '';
+
 function displayResults(responseJson) {
+    //console.log('displayResults ran');
     console.log(responseJson);
     
     // clear old results out and previous error messages
@@ -34,29 +38,18 @@ function formatRestaruantParams(params) {
     return queryItems.join('&');
 }
 
-function formatMapParams(params) {
-    const queryItems = Object.keys(params)
-        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-    return queryItems.join('&');
-}
+// function formatMapParams(params) {
+//     const queryItems = Object.keys(params)
+//         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+//     return queryItems.join('&');
+// }
 
-function getMapData() {
-    const mapURLTest = 'https://api.mapbox.com/directions/v5/mapbox/walking/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBuaGc1ODAza2UzbG1zeTN4YmR6aTYifQ.jwuhK79huZWKto7UTfZvQQ';
-    sendAPIRequest(mapURLTest);
-}
+// function getMapData() {
+//     const mapURLTest = 'https://api.mapbox.com/directions/v5/mapbox/walking/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBuaGc1ODAza2UzbG1zeTN4YmR6aTYifQ.jwuhK79huZWKto7UTfZvQQ';
+//     sendAPIRequest(mapURLTest);
+// }
 
-function getGeocode(addr, geoURL, token) {
-    //const geoURLTest = 'https://api.mapbox.com/geocoding/v5/mapbox.places/95%20Mt%20Pleasant%20St%20Frostburg%20MD%2021532.json?access_token=pk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBuaGc1ODAza2UzbG1zeTN4YmR6aTYifQ.jwuhK79huZWKto7UTfZvQQ';
-    // sendAPIRequest(geoURLTest);
-
-    const reformatAddr = encodeURIComponent(addr);
-    console.log(reformatAddr);
-
-    const url = geoURL + reformatAddr + '.json?access_token=' + token;
-    sendAPIRequest(url);
-}
-
-function getRestaurants(lat, long) {
+function createRestaurantsParams(lat, long) {
     const params = {
         latitude: lat,
         longitude: long,
@@ -65,32 +58,42 @@ function getRestaurants(lat, long) {
     };
 
     const queryString = formatRestaruantParams(params);
-    const url = tripAdvisorURL + '?' + queryString;
+    restUrl = tripAdvisorURL + '?' + queryString;
     
-    const options = {
+    options = {
         method: 'GET',
         headers: new Headers({
             'x-rapidapi-host': tripAdvisorHost,
             'x-rapidapi-key': tripAdvisorKey})
     };
+}
 
-    console.log(url);
-    console.log(options);
-    sendAPIRequest(url, options);
+function getGeocode(addr, geoURL, token) {
+    const reformatAddr = encodeURIComponent(addr);
+    const url = geoURL + reformatAddr + '.json?access_token=' + token;
+    sendAPIRequest(url)
+    .then(responseJson => {
+        const long = responseJson.features[0].geometry.coordinates[0];
+        const lat = responseJson.features[0].geometry.coordinates[1];
+        createRestaurantsParams(lat, long);
+        sendAPIRequest(restUrl, options)
+        .then(responseJson => {
+            console.log(responseJson)
+        })
+    })
+        .catch(err => {
+            $('#js-error-message').text(`Something went wrong: ${err.message}`);
+        });
 }
 
 function sendAPIRequest(url, options) {
-    fetch(url, options)
+    return fetch(url, options)
     .then(response => {
         if (response.ok) {
             return response.json();
         }
             throw new Error(response.statusText);
-        })
-    .then(responseJson => displayResults(responseJson))
-    .catch(err => {
-        $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    });
+        });
 }
 
 function watchForm() {
@@ -98,9 +101,6 @@ function watchForm() {
         event.preventDefault();
         const address = $('#adr').val() + ' ' + $('#city').val() + ' ' + $('#state').val() + ' ' + $('#zip').val();
         getGeocode(address, geocodingURL, mapToken);
-
-        // getRestaurants(lat, long);
-        //getGeocode();
     });
 }
 
