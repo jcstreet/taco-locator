@@ -8,14 +8,11 @@ const tripAdvisorKey = '1657e754d7msh055d850080cfb12p1fd65bjsnefdf7a34fe0c';
 const tripAdvisorHost = 'tripadvisor1.p.rapidapi.com';
 const tripAdvisorURL = 'https://tripadvisor1.p.rapidapi.com/restaurants/list-by-latlng';
 
-
+let gUrl = '';
 let options = {};
 let restUrl = '';
 
 function displayResults(responseJson) {
-    //console.log('displayResults ran');
-    console.log(responseJson);
-    
     // clear old results out and previous error messages
     //$('#results-list').empty();
     //$('#js-error-message').empty();
@@ -32,12 +29,6 @@ function displayResults(responseJson) {
     //$('#results').removeClass('hidden')
 }
 
-function formatRestaruantParams(params) {
-    const queryItems = Object.keys(params)
-        .map(key => `${key}=${params[key]}`)
-    return queryItems.join('&');
-}
-
 // function formatMapParams(params) {
 //     const queryItems = Object.keys(params)
 //         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -48,6 +39,31 @@ function formatRestaruantParams(params) {
 //     const mapURLTest = 'https://api.mapbox.com/directions/v5/mapbox/walking/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoianN0cmVldHBob3RvIiwiYSI6ImNrNDBuaGc1ODAza2UzbG1zeTN4YmR6aTYifQ.jwuhK79huZWKto7UTfZvQQ';
 //     sendAPIRequest(mapURLTest);
 // }
+
+function formatRestData(responseJson) {
+    $('#results-list').empty();
+    $('#js-error-message').empty();
+
+    const restaurant = responseJson.data[0].name;
+    const restAddress = responseJson.data[0].address;
+    const restLat = responseJson.data[0].latitude;
+    const restLong = responseJson.data[0].longitude;
+
+    $('#results-list').append(
+        `<li><h3>${restaurant}</h3>
+            <p>${restAddress}</p>
+            <p>${restLat}</p>
+            <p>${restLong}</p>
+        </li>`            
+    );
+    $('#results').removeClass('hidden');
+}
+
+function formatRestaruantParams(params) {
+    const queryItems = Object.keys(params)
+        .map(key => `${key}=${params[key]}`)
+    return queryItems.join('&');
+}
 
 function createRestaurantsParams(lat, long) {
     const params = {
@@ -68,17 +84,24 @@ function createRestaurantsParams(lat, long) {
     };
 }
 
-function getGeocode(addr, geoURL, token) {
+function createGeocodeURL(addr, geoURL, token) {
     const reformatAddr = encodeURIComponent(addr);
-    const url = geoURL + reformatAddr + '.json?access_token=' + token;
-    sendAPIRequest(url)
+    gUrl = geoURL + reformatAddr + '.json?access_token=' + token; 
+}
+
+function getGeocode() {
+    // Graps the lat and long from the geocoding API
+    sendAPIRequest(gUrl)
     .then(responseJson => {
         const long = responseJson.features[0].geometry.coordinates[0];
         const lat = responseJson.features[0].geometry.coordinates[1];
+
         createRestaurantsParams(lat, long);
+        // grabs the closes restaurant from trip advisers API
         sendAPIRequest(restUrl, options)
         .then(responseJson => {
-            console.log(responseJson)
+            console.log(responseJson);
+            formatRestData(responseJson);
         })
     })
         .catch(err => {
@@ -100,7 +123,8 @@ function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         const address = $('#adr').val() + ' ' + $('#city').val() + ' ' + $('#state').val() + ' ' + $('#zip').val();
-        getGeocode(address, geocodingURL, mapToken);
+        createGeocodeURL(address, geocodingURL, mapToken);
+        getGeocode();
     });
 }
 
