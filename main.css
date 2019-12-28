@@ -6,6 +6,10 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     padding: 20px 0px;
+    background-image: url(images/white-black-lined-wall.jpg);
+    background-size: cover;
+    background-position: bottom center;
+    min-height: 100vh;
 }
 
 button, input[type="text"] {
@@ -90,14 +94,13 @@ input[type=submit] {
 
 .container h1 {
     text-align: center;
-    font-family: Pacifico, cursive;
+    /* font-family: Pacifico, cursive; */
     margin: 60px;
-    /* font-family: 'Bungee Shade', cursive; */
+    font-family: 'Bungee Shade', cursive; 
     font-size: 90px;
-    color: rgb(235, 204, 255);
-    text-shadow: 0 -40px 100px, 0 0 1px, 0 0 1em #3e174d, 0 0 0.5em #59216e, 0 0 0.1em #59216e, 0 7px 3px #000;
-    animation: flicker .1s linear 3s 3;
-}
+    color: rgb(193, 42, 5);
+    /* text-shadow: 0 -40px 100px, 0 0 1px, 0 0 1em #3e174d, 0 0 0.5em #59216e, 0 0 0.1em #59216e, 0 7px 3px #000;
+    animation: flicker .1s linear 3s 3; */
 
 li h3 {
     margin: 7px 0px;
