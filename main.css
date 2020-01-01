@@ -35,9 +35,23 @@ li {
 }
 
 .container {
-    max-width: 600px;
     margin: 0 auto;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#js-form {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+.box {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    width: 45%;
 }
 
 label {
@@ -55,13 +69,13 @@ input[type=text], select, textarea {
 
 .left {
     float: left;
-    width: 15%;
+    width: 25%;
     margin-top: 6px;
 }
 
 .right {
     float: right;
-    width: 85%;
+    width: 75%;
     margin-top: 6px;
 }
 
@@ -94,13 +108,11 @@ input[type=submit] {
 
 .container h1 {
     text-align: center;
-    /* font-family: Pacifico, cursive; */
     margin: 60px;
     font-family: 'Bungee Shade', cursive; 
     font-size: 90px;
     color: rgb(193, 42, 5);
-    /* text-shadow: 0 -40px 100px, 0 0 1px, 0 0 1em #3e174d, 0 0 0.5em #59216e, 0 0 0.1em #59216e, 0 7px 3px #000;
-    animation: flicker .1s linear 3s 3; */
+}
 
 li h3 {
     margin: 7px 0px;
@@ -127,5 +139,13 @@ li h3 {
         width: 50%;
         margin: 15px 0;
         text-align: center;
+    }
+
+    .box {
+        display: block;
+    }
+
+    .box1, .box2 {
+        width: 80%;
     }
 }

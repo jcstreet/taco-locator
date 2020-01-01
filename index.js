@@ -18,10 +18,12 @@ function displayTacoDirections(taco) {
         `            
     );
     $('#results').removeClass('hidden');
+    $('#box1').addClass('box');
+    $('#box2').addClass('box');
 }
 
 function getMiles(meters) {
-    return meters * 0.00062137;
+    return (meters * 0.00062137).toFixed(2);
 }
 
 function getMinutes(seconds) {

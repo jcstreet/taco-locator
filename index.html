@@ -10,36 +10,35 @@
     <link href="https://fonts.googleapis.com/css?family=Bungee+Shade&display=swap" rel="stylesheet"> 
 </head>
 <body>
-    <div class="container">
+    <section class="container">
         <h1>tacos</h1>
-
-        <form id="js-form">
-            <div class="row">
-                <div class="left"><label for="adr">Address</label></div>
-                <div class="right"><input type="text" name="address" id="adr" placeholder="2 Columbus Cir" required></div>
-            </div>
-            <div class="row">
-                <div class="left"><label for="city">City</label></div>
-                <div class="right"><input type="text" name="city" id="city" placeholder="New York" required></div>
-            </div>
-            <div class="row">
-                <div class="left"><label for="state">State</label></div>
-                <div class="right"><input type="text" id="state" name="state" placeholder="NY" required></div>
-            </div>
-            <div class="row">
-                <div class="left"><label for="zip">Zip</label></div>
-                <div class="right"><input type="text" id="zip" name="zip" placeholder="10019" required></div>
-            </div>
-            <input type="submit" value="Find!">
-        </form>
-
-        <p id="js-error-message" class="error-message"></p>
-        <section id="results" class="hidden">
-          <h2>Search results</h2>
-          <ul id="results-list">
-          </ul>
+        <section id="box1">
+            <form id="js-form">
+                <div class="row">
+                    <div class="left"><label for="adr">Address</label></div>
+                    <div class="right"><input type="text" name="address" id="adr" placeholder="2 Columbus Cir" required></div>
+                </div>
+                <div class="row">
+                    <div class="left"><label for="city">City</label></div>
+                    <div class="right"><input type="text" name="city" id="city" placeholder="New York" required></div>
+                </div>
+                <div class="row">
+                    <div class="left"><label for="state">State</label></div>
+                    <div class="right"><input type="text" id="state" name="state" placeholder="NY" required></div>
+                </div>
+                <div class="row">
+                    <div class="left"><label for="zip">Zip</label></div>
+                    <div class="right"><input type="text" id="zip" name="zip" placeholder="10019" required></div>
+                </div>
+                <input type="submit" value="Find A Taco">
+            </form>
         </section>
-    </div>
+        <section id="box2">
+            <p id="js-error-message" class="error-message"></p>
+            <section id="results" class="hidden">
+            </section>
+        </section>
+    </section>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="index.js"></script>
 </body>
