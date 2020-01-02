@@ -4,8 +4,8 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    padding: 20px 0px;
+    font-size: 20px;
+    padding: 0;
     background-image: url(images/white-black-lined-wall.jpg);
     background-size: cover;
     background-position: bottom center;
@@ -98,6 +98,16 @@ input[type=submit] {
     cursor: pointer;
 }
 
+/* Removes yellow from FF if user uses autocomplete */ 
+input {
+    filter: none;
+}
+
+/* Removes yellow from Safari and Chrome if user uses autocomplete */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}
+
 .error-message {
     color: red;
 }
@@ -108,7 +118,7 @@ input[type=submit] {
 
 .container h1 {
     text-align: center;
-    margin: 60px;
+    margin: 80px;
     font-family: 'Bungee Shade', cursive; 
     font-size: 90px;
     color: rgb(193, 42, 5);
@@ -118,21 +128,45 @@ li h3 {
     margin: 7px 0px;
 }
 
-/* The animation code */
-@keyframes flicker {
-    from {color: rgb(217, 209, 255);}
-    to {color: black;}
+#results {
+    color: rgb(60, 55, 110);
+}
+
+#results img {
+    width: 30px;
+}
+
+#results p {
+    font-size: 16px;
+    color: #3F8B94;
+}
+
+#results h2 {
+    padding: 0;
+    margin: 0;
+}
+
+#results h3 {
+    font-size: 18px;
+}
+
+footer {
+    text-align: center;
+    font-size: 16px;
+    margin: 80px 0 0 0;
 }
 
 @media screen and (max-width: 600px) {
+    .container h1 {
+        margin: 40px;
+        font-size: 60px;
+    }
+
     .left, .right {
         width: 100%;
         text-align: left;
-        margin: 0 0;
-    }
-
-    .right {
-        margin-bottom: 1px;
+        margin: 0;
+        padding: 1px;
     }
 
     input[type=submit] {
@@ -143,9 +177,22 @@ li h3 {
 
     .box {
         display: block;
+        width: 85%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    label {
+        padding: 6px;
     }
 
     .box1, .box2 {
         width: 80%;
     }
+
+    li h3 {
+        margin: 3px 0px;
+    }
+
+    
 }

@@ -13,8 +13,9 @@ let restaurantUrl = '';
 
 function displayTacoDirections(taco) {
     $('#results').prepend(
-        `<p>A taco is only ${taco.miles} miles away.</p>
-        <p>It will take ${taco.minutes} minutes to walk there.</p>
+        `<h2><img src="/images/taco.png" alt="taco icon"> You're in luck! <img src="/images/taco.png" alt="taco icon"></h2>
+        <p>A taco is only <b>${taco.miles} miles</b> away.</p>
+        <p>It will take <b>${taco.minutes} minutes</b> to walk there.</p>
         `            
     );
     $('#results').removeClass('hidden');
@@ -27,7 +28,7 @@ function getMiles(meters) {
 }
 
 function getMinutes(seconds) {
-    return seconds / 60;
+    return (seconds / 60).toFixed(0);
 }
 
 function handleMapResponse(responseJson) {
@@ -40,8 +41,8 @@ function handleMapResponse(responseJson) {
 }
 
 function formatMapURL(long, lat, restaurant) {
-    const queryString = long + ',' + lat + ';' + restaurant.long + ',' + restaurant.lat;
-    const url = mapURL + encodeURIComponent(queryString) + '.json?access_token=' + mapToken;
+    const queryString = `${long},${lat};${restaurant.long},${restaurant.lat}`;
+    const url = `${mapURL}${encodeURIComponent(queryString)}.json?access_token=${mapToken}`;
 
     return url;
 }
@@ -141,6 +142,7 @@ function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         const address = $('#adr').val() + ' ' + $('#city').val() + ' ' + $('#state').val() + ' ' + $('#zip').val();
+        console.log($("#js-form").get(0));
         getAllTheData(address);
     });
 }
