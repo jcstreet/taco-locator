@@ -13,9 +13,9 @@ let restaurantUrl = '';
 
 function displayTacoDirections(taco) {
     $('#results').prepend(
-        `<h2><img src="/images/taco.png" alt="taco icon"> You're in luck! <img src="/images/taco.png" alt="taco icon"></h2>
-        <p>A taco is only <b>${taco.miles} miles</b> away.</p>
-        <p>It will take <b>${taco.minutes} minutes</b> to walk there.</p>
+        `        <p class="taco-emoji"><img src="/images/taco.png" alt="taco icon"><img src="/images/taco.png" alt="taco icon"><img src="/images/taco.png" alt="taco icon"></p>
+        <h2>A taco is only ${taco.miles} miles away.</h2>
+        <p class="minutes">It will take ${taco.minutes} minutes to walk there.</p>
         `            
     );
     $('#results').removeClass('hidden');
@@ -24,7 +24,7 @@ function displayTacoDirections(taco) {
 }
 
 function getMiles(meters) {
-    return (meters * 0.00062137).toFixed(2);
+    return (meters * 0.00062137).toFixed(1);
 }
 
 function getMinutes(seconds) {
@@ -50,7 +50,7 @@ function formatMapURL(long, lat, restaurant) {
 function displayRestaurant(restaurant) {
     $('#results').append(
         `<h3>${restaurant.name}</h3>
-        <p>${restaurant.address}</p>
+        <p class="taco-address">${restaurant.address}</p>
         `            
     );
 }
