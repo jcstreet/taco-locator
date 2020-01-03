@@ -149,11 +149,11 @@ li h3 {
     margin: 0 0 15px 0;
 }
 
-.minutes, .taco-address {
+.miles, .taco-address {
     color: #0672A4;
 }
 
-.minutes {
+.miles {
     font-weight: bold;
     margin: 10px 0;
 }
@@ -213,6 +213,13 @@ footer {
 
     label {
         padding: 6px;
+    }
+
+    #results {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 200px;
+        margin-top: 40px;
     }
 
     .box1, .box2 {

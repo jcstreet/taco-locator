@@ -13,9 +13,9 @@ let restaurantUrl = '';
 
 function displayTacoDirections(taco) {
     $('#results').prepend(
-        `        <p class="taco-emoji"><img src="/images/taco.png" alt="taco icon"><img src="/images/taco.png" alt="taco icon"><img src="/images/taco.png" alt="taco icon"></p>
-        <h2>A taco is only ${taco.miles} miles away.</h2>
-        <p class="minutes">It will take ${taco.minutes} minutes to walk there.</p>
+        `<p class="taco-emoji"><img src="/images/taco.png" alt="taco icon"><img src="/images/taco.png" alt="taco icon"><img src="/images/taco.png" alt="taco icon"></p>
+        <h2>It will take ${taco.minutes} minutes to walk to a taco.</h2>
+        <p class="miles">It's only ${taco.miles} miles away.</p>
         `            
     );
     $('#results').removeClass('hidden');
