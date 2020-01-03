@@ -142,7 +142,6 @@ function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         const address = $('#adr').val() + ' ' + $('#city').val() + ' ' + $('#state').val() + ' ' + $('#zip').val();
-        console.log($("#js-form").get(0));
         getAllTheData(address);
     });
 }
