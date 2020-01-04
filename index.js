@@ -8,9 +8,6 @@ const tripAdvisorKey = '1657e754d7msh055d850080cfb12p1fd65bjsnefdf7a34fe0c';
 const tripAdvisorHost = 'tripadvisor1.p.rapidapi.com';
 const tripAdvisorURL = 'https://tripadvisor1.p.rapidapi.com/restaurants/list-by-latlng';
 
-let options = {};
-let restaurantUrl = '';
-
 function displayTacoDirections(taco) {
     $('#results').prepend(
         `<p class="taco-emoji"><img src="images/taco.png" alt="taco icon"><img src="images/taco.png" alt="taco icon"><img src="images/taco.png" alt="taco icon"></p>
@@ -36,14 +33,12 @@ function handleMapResponse(responseJson) {
         miles: getMiles(responseJson.routes[0].distance),
         minutes: getMinutes(responseJson.routes[0].duration)
     }
-
     return tacoDirections;
 }
 
 function formatMapURL(long, lat, restaurant) {
     const queryString = `${long},${lat};${restaurant.long},${restaurant.lat}`;
     const url = `${mapURL}${encodeURIComponent(queryString)}.json?access_token=${mapToken}`;
-
     return url;
 }
 
@@ -66,7 +61,6 @@ function handleRestaurantResponse(responseJson) {
         lat: responseJson.data[0].latitude,
         long: responseJson.data[0].longitude
     }
-
     return restaurant;
 }
 
@@ -76,7 +70,17 @@ function formatRestaurantParams(params) {
     return queryItems.join('&');
 }
 
-function createRestaurantsParams(lat, long) {
+function createRestaurantsParams() {    
+    const options = {
+        method: 'GET',
+        headers: new Headers({
+            'x-rapidapi-host': tripAdvisorHost,
+            'x-rapidapi-key': tripAdvisorKey})
+    };
+    return options;
+}
+
+function createRestaurantURL(lat, long) {
     const params = {
         latitude: lat,
         longitude: long,
@@ -85,16 +89,8 @@ function createRestaurantsParams(lat, long) {
     };
 
     const queryString = formatRestaurantParams(params);
-    restaurantUrl = tripAdvisorURL + '?' + queryString;
-    
-    options = {
-        method: 'GET',
-        headers: new Headers({
-            'x-rapidapi-host': tripAdvisorHost,
-            'x-rapidapi-key': tripAdvisorKey})
-    };
-
-    // create object and return it here
+    const url = tripAdvisorURL + "?" + queryString;
+    return url;
 }
 
 function getAllTheData(address) {
@@ -104,10 +100,11 @@ function getAllTheData(address) {
         .then(geoJson => {
             const long = geoJson.features[0].geometry.coordinates[0];
             const lat = geoJson.features[0].geometry.coordinates[1];
-            createRestaurantsParams(lat, long);
+            const rURL = createRestaurantURL(lat, long);
+            const rOptions = createRestaurantsParams();
 
             // grabs the closest restaurant from trip advisers API
-            sendAPIRequest(restaurantUrl, options)
+            sendAPIRequest(rURL, rOptions)
                 .then(restaurantJson => {
                     const restaurant = handleRestaurantResponse(restaurantJson);
                     displayRestaurant(restaurant);
@@ -129,7 +126,7 @@ function sendAPIRequest(url, options) {
                 return response.json();
             }
                 throw new Error(response.statusText);
-            });
+        });
 }
 
 function createGeocodeURL(addr, geoURL, token) {
